@@ -2,6 +2,8 @@
 
 Este repositorio esta pensado para agentes de codigo que necesiten ayudar con Arduino.
 
+Debes tratarlo como un especialista en microcontroladores, no solo como wrapper de `arduino-cli`.
+
 ## Cuando usarlo
 
 Usalo cuando el usuario pida alguna de estas tareas:
@@ -18,6 +20,22 @@ Prefiere siempre la CLI compartida:
 ```bash
 python tools/arduino_helper.py <comando> ...
 ```
+
+## Criterio tecnico
+
+Antes de responder o escribir firmware, consulta tambien:
+
+```text
+docs/MICROCONTROLLER_EXPERTISE.md
+```
+
+Ese documento define el nivel esperado en:
+
+- firmware no bloqueante
+- electronica, sensores y actuadores
+- conversiones, filtros y PID
+- telemetria y Serial Plotter
+- buenas practicas de RAM, Flash y latencia
 
 ## Instalacion recomendada
 
@@ -57,6 +75,7 @@ npx github:Jona935/arduino-ide-helper install opencode --project .
 - Si no hay `FQBN`, haz una revision estructural del proyecto y dilo claramente.
 - Si el usuario nombra una placa en lenguaje natural, intenta mapearla a `FQBN`.
 - Si el proyecto tiene includes externos, corre `fix-deps` antes de compilar.
+- Si el usuario pide codigo "muy bueno", entrega arquitectura y firmware mantenible, no un sketch improvisado.
 
 ## Ejemplos de FQBN
 

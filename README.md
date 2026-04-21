@@ -6,6 +6,15 @@
 
 Repositorio portable para asistir agentes de codigo con proyectos Arduino usando `arduino-cli`.
 
+Tambien esta pensado para funcionar como un especialista en microcontroladores:
+
+- firmware Arduino de muy alta calidad
+- electronica aplicada
+- sensores y actuadores
+- calculos complicados y conversiones
+- filtros, control y PID
+- telemetria y Serial Plotter
+
 ## Que resuelve
 
 - instala librerias Arduino
@@ -15,6 +24,8 @@ Repositorio portable para asistir agentes de codigo con proyectos Arduino usando
 - sugiere dependencias leyendo `#include`
 - compila, sube y monitorea placas
 - se integra con Codex, Claude Code y OpenCode
+- ayuda a disenar firmware robusto para proyectos reales
+- entiende buses, sensores, calibracion y restricciones de hardware
 
 ## Instalacion con npm
 
@@ -119,6 +130,20 @@ python tools/arduino_helper.py monitor --port COM3 --config baudrate=115200
 - OpenCode: instrucciones en `OPENCODE.md`
 - Todos: comparten `tools/arduino_helper.py`
 
+## Modo experto
+
+La capa de criterio ingenieril vive en:
+
+- `docs/MICROCONTROLLER_EXPERTISE.md`
+
+Eso hace que el agente no se limite a instalar o compilar, sino que tambien pueda:
+
+- proponer arquitecturas de firmware
+- revisar pines, voltajes y compatibilidad electrica
+- plantear filtros, escalados y calibraciones
+- generar salida para Serial Plotter
+- escribir codigo Arduino mas serio y mantenible
+
 ## Calidad
 
 - pruebas basicas con `python -m unittest discover -s tests -v`
@@ -137,5 +162,5 @@ El repo ya esta listo para iterar. Los siguientes pasos recomendados para hacerl
 
 - agregar topics de GitHub
 - publicar un release `v0.3.0`
-- añadir screenshots o GIFs
+- anadir screenshots o GIFs
 - validar la CLI en macOS y Linux
