@@ -27,6 +27,9 @@ Antes de responder o escribir firmware, consulta tambien:
 
 ```text
 docs/MICROCONTROLLER_EXPERTISE.md
+docs/PROJECT_ROUTER.md
+docs/components/
+templates/
 ```
 
 Ese documento define el nivel esperado en:
@@ -36,6 +39,8 @@ Ese documento define el nivel esperado en:
 - conversiones, filtros y PID
 - telemetria y Serial Plotter
 - buenas practicas de RAM, Flash y latencia
+- seleccion de placa y arquitectura por escenario
+- reutilizacion de plantillas por categoria
 
 ## Instalacion recomendada
 
@@ -76,6 +81,9 @@ npx github:Jona935/arduino-ide-helper install opencode --project .
 - Si el usuario nombra una placa en lenguaje natural, intenta mapearla a `FQBN`.
 - Si el proyecto tiene includes externos, corre `fix-deps` antes de compilar.
 - Si el usuario pide codigo "muy bueno", entrega arquitectura y firmware mantenible, no un sketch improvisado.
+- Si el usuario trae una idea abierta de proyecto, decide placa, componentes, wiring, setup y firmware.
+- Si el usuario pide componente especifico, consulta `docs/components/`.
+- Si el usuario pide un tipo de solucion comun, parte desde `templates/` y adaptala.
 
 ## Ejemplos de FQBN
 

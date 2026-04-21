@@ -7,19 +7,41 @@ const { spawnSync } = require("node:child_process");
 
 const packageRoot = path.resolve(__dirname, "..");
 const pluginName = "arduino-ide-helper";
+const version = "0.4.0";
+
+const ansi = {
+  reset: "\x1b[0m",
+  bold: "\x1b[1m",
+  dim: "\x1b[2m",
+  green: "\x1b[32m",
+  cyan: "\x1b[36m",
+  yellow: "\x1b[33m",
+  blue: "\x1b[34m",
+  magenta: "\x1b[35m"
+};
+
+const mascot = String.raw`
+        .-.
+   ____ |+|   tiny board buddy
+  | __ || |   pins up, signals clean
+  ||__|||_|   ready to boot firmware
+  |_____[_] 
+`;
+
 const banner = String.raw`
       _         _       _
      / \   _ __| | ___ (_)_ __   ___
     / _ \ | '__| |/ _ \| | '_ \ / _ \
    / ___ \| |  | | (_) | | | | | (_) |
   /_/   \_\_|  |_|\___/|_|_| |_|\___/
-
-   .-------------------------------------.
-   |   o   Arduino IDE Helper v0.3.0     |
-   |  ---  firmware + sensores + plot    |
-   |   +   codex / claude / opencode     |
-   '-------------------------------------'
 `;
+
+function colorize(text, color) {
+  if (!process.stdout.isTTY) {
+    return text;
+  }
+  return `${ansi[color]}${text}${ansi.reset}`;
+}
 
 function sleepMs(ms) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
@@ -27,24 +49,25 @@ function sleepMs(ms) {
 
 function showIntro(mode = "default") {
   if (!process.stdout.isTTY) {
-    if (mode !== "quiet") {
-      console.log("Arduino IDE Helper");
-    }
+    console.log("Arduino IDE Helper");
     return;
   }
 
-  console.log(banner);
+  console.log(colorize(banner, "cyan"));
+  console.log(colorize(mascot, "green"));
+  console.log(`${colorize("Arduino IDE Helper", "bold")} ${colorize(`v${version}`, "yellow")}`);
+  console.log(colorize("firmware + sensores + templates + conocimiento", "blue"));
+  console.log("");
 
   const frames = [
-    "[=         ] booting boards",
-    "[===       ] syncing sensors",
-    "[=====     ] tuning signals",
-    "[=======   ] preparing tools",
-    "[========= ] ready for upload"
+    colorize("[=         ] booting boards", "cyan"),
+    colorize("[===       ] syncing sensors", "blue"),
+    colorize("[=====     ] loading templates", "magenta"),
+    colorize("[=======   ] routing project intent", "yellow"),
+    colorize("[========= ] ready for firmware", "green")
   ];
 
-  const useAnimation = mode === "animated";
-  if (!useAnimation) {
+  if (mode !== "animated") {
     console.log(frames[frames.length - 1]);
     console.log("");
     return;
@@ -52,9 +75,18 @@ function showIntro(mode = "default") {
 
   for (const frame of frames) {
     process.stdout.write(`\r${frame}`);
-    sleepMs(55);
+    sleepMs(60);
   }
   process.stdout.write("\n\n");
+}
+
+function showSuccess(title, lines = []) {
+  const header = process.stdout.isTTY ? colorize(`OK ${title}`, "green") : `OK ${title}`;
+  console.log(header);
+  for (const line of lines) {
+    console.log(process.stdout.isTTY ? colorize(`  - ${line}`, "dim") : `  - ${line}`);
+  }
+  console.log("");
 }
 
 function printHelp() {
@@ -79,7 +111,7 @@ Comandos:
 }
 
 function fail(message) {
-  console.error(`Error: ${message}`);
+  console.error(process.stdout.isTTY ? colorize(`Error: ${message}`, "yellow") : `Error: ${message}`);
   process.exit(1);
 }
 
@@ -125,11 +157,12 @@ function copyRecursive(source, destination) {
 function writeFileIfAllowed(source, destination, force) {
   if (!force && fs.existsSync(destination)) {
     console.log(`Saltando ${destination} porque ya existe. Usa --force para sobrescribir.`);
-    return;
+    return false;
   }
   ensureDir(path.dirname(destination));
   fs.copyFileSync(source, destination);
   console.log(`Escribi ${destination}`);
+  return true;
 }
 
 function readJson(filePath, fallback) {
@@ -154,9 +187,10 @@ function requireProject(flags) {
 
 function installAll(flags) {
   showIntro("animated");
-  installCodexBody();
-  installClaudeBody(flags);
-  installOpenCodeBody(flags);
+  const codexLines = installCodexBody();
+  const claudeLines = installClaudeBody(flags);
+  const opencodeLines = installOpenCodeBody(flags);
+  showSuccess("Instalacion completa", [...codexLines, ...claudeLines, ...opencodeLines]);
 }
 
 function installCodexBody() {
@@ -204,24 +238,30 @@ function installCodexBody() {
 
   writeJson(marketplacePath, marketplace);
   console.log(`Marketplace actualizado en ${marketplacePath}`);
+  return [
+    `plugin en ${pluginDestination}`,
+    `marketplace en ${marketplacePath}`
+  ];
 }
 
 function installClaudeBody(flags) {
   const projectPath = requireProject(flags);
-  writeFileIfAllowed(
+  const written = writeFileIfAllowed(
     path.join(packageRoot, "CLAUDE.md"),
     path.join(projectPath, "CLAUDE.md"),
     flags.force
   );
+  return [written ? `CLAUDE.md instalado en ${projectPath}` : `CLAUDE.md conservado en ${projectPath}`];
 }
 
 function installOpenCodeBody(flags) {
   const projectPath = requireProject(flags);
-  writeFileIfAllowed(
+  const written = writeFileIfAllowed(
     path.join(packageRoot, "OPENCODE.md"),
     path.join(projectPath, "OPENCODE.md"),
     flags.force
   );
+  return [written ? `OPENCODE.md instalado en ${projectPath}` : `OPENCODE.md conservado en ${projectPath}`];
 }
 
 function probe(command, args = ["--version"]) {
@@ -235,7 +275,7 @@ function probe(command, args = ["--version"]) {
 function doctor() {
   showIntro("default");
   const nodeVersion = process.version;
-  console.log(`Node: ${nodeVersion}`);
+  const lines = [`Node: ${nodeVersion}`];
 
   const python = probe("python", ["--version"]);
   const pyLauncher = python.ok ? null : probe("py", ["--version"]);
@@ -244,17 +284,21 @@ function doctor() {
     : pyLauncher && pyLauncher.ok
       ? pyLauncher.output
       : "no encontrado";
-  console.log(`Python: ${pythonMessage}`);
+  lines.push(`Python: ${pythonMessage}`);
 
   const arduinoCliEnv = process.env.ARDUINO_CLI_PATH;
   if (arduinoCliEnv && fs.existsSync(arduinoCliEnv)) {
-    console.log(`arduino-cli: ${arduinoCliEnv}`);
+    lines.push(`arduino-cli: ${arduinoCliEnv}`);
+    lines.forEach((line) => console.log(line));
+    showSuccess("Doctor completo", lines);
     return;
   }
 
   const arduinoCli = probe("arduino-cli", ["version"]);
   if (arduinoCli.ok) {
-    console.log(`arduino-cli: ${arduinoCli.output}`);
+    lines.push(`arduino-cli: ${arduinoCli.output}`);
+    lines.forEach((line) => console.log(line));
+    showSuccess("Doctor completo", lines);
     return;
   }
 
@@ -268,11 +312,9 @@ function doctor() {
   ];
 
   const detected = candidates.find((candidate) => fs.existsSync(candidate));
-  if (detected) {
-    console.log(`arduino-cli: ${detected}`);
-  } else {
-    console.log("arduino-cli: no encontrado");
-  }
+  lines.push(detected ? `arduino-cli: ${detected}` : "arduino-cli: no encontrado");
+  lines.forEach((line) => console.log(line));
+  showSuccess("Doctor completo", lines);
 }
 
 function main() {
@@ -300,17 +342,17 @@ function main() {
 
   if (target === "codex") {
     showIntro("animated");
-    installCodexBody();
+    showSuccess("Codex listo", installCodexBody());
     return;
   }
   if (target === "claude") {
     showIntro("animated");
-    installClaudeBody(flags);
+    showSuccess("Claude Code listo", installClaudeBody(flags));
     return;
   }
   if (target === "opencode") {
     showIntro("animated");
-    installOpenCodeBody(flags);
+    showSuccess("OpenCode listo", installOpenCodeBody(flags));
     return;
   }
   if (target === "all") {

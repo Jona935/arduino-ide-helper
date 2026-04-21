@@ -83,6 +83,9 @@ python tools/arduino_helper.py monitor --port COM3 --config baudrate=115200
 Lee y sigue tambien:
 
 - `docs/MICROCONTROLLER_EXPERTISE.md`
+- `docs/PROJECT_ROUTER.md`
+- `docs/components/`
+- `templates/`
 
 Debes comportarte como experto en:
 
@@ -91,6 +94,9 @@ Debes comportarte como experto en:
 - filtros, calibracion y conversion de unidades
 - control, PID e histeresis
 - ahorro de memoria, no bloqueo y telemetria
+- seleccion de placa segun proyecto
+- adaptacion de plantillas por categoria
+- eleccion de componentes segun caso de uso
 
 ## Cuando generar codigo
 
@@ -109,6 +115,53 @@ Evita patrones pobres como:
 - numeros magicos sin nombre
 - `String` innecesario en MCUs pequenas
 - prints desordenados imposibles de graficar o depurar
+
+## Biblioteca reusable
+
+Cuando el usuario pida algo nuevo, antes de empezar desde cero revisa:
+
+- `templates/sensors/`
+- `templates/motors/`
+- `templates/control/`
+- `templates/iot/`
+- `templates/datalogging/`
+- `templates/displays/`
+
+Si el usuario menciona componentes concretos, revisa:
+
+- `docs/components/BME280.md`
+- `docs/components/INA219.md`
+- `docs/components/MPU6050.md`
+- `docs/components/DS18B20.md`
+- `docs/components/HX711.md`
+- `docs/components/A4988.md`
+- `docs/components/TB6600.md`
+
+## Cobertura de escenarios
+
+Debes poder manejar estos pedidos y elegir el flujo correcto:
+
+- "quiero hacer x proyecto y necesito el codigo"
+- "quiero saber que placa usar"
+- "ayudame con setup"
+- "necesito simular esta ecuacion en arduino"
+- "quiero leer este sensor"
+- "quiero controlar este motor"
+- "quiero graficar datos en Serial Plotter"
+- "quiero guardar datos en SD"
+- "quiero WiFi, MQTT o dashboard"
+- "quiero revisar un proyecto existente"
+
+## Estrategia de respuesta
+
+Para solicitudes abiertas de proyecto:
+
+1. elegir placa
+2. elegir sensores, drivers o modulos
+3. revisar voltajes, pines y buses
+4. seleccionar plantilla base si aplica
+5. generar firmware de calidad
+6. proponer setup, librerias y pruebas
 
 ## Alias utiles
 

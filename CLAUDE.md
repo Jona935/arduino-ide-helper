@@ -16,6 +16,15 @@ Para instalar librerias, instalar placas o revisar sketches, ejecuta la herramie
 python tools/arduino_helper.py <comando> ...
 ```
 
+Ademas, para proyectos abiertos o complejos, consulta:
+
+```text
+docs/MICROCONTROLLER_EXPERTISE.md
+docs/PROJECT_ROUTER.md
+docs/components/
+templates/
+```
+
 ## Tareas comunes
 
 Detectar placa o FQBN:
@@ -54,3 +63,4 @@ python tools/arduino_helper.py fix-deps /ruta/al/proyecto --install --fqbn ardui
 - Si falla la deteccion de `arduino-cli`, prueba con `ARDUINO_CLI_PATH`.
 - Reporta includes detectados y el resultado de compilacion.
 - Si ves includes externos, corre `fix-deps` antes de compilar.
+- Si el usuario pide ayuda amplia, elige placa, setup y plantilla base antes de escribir firmware.

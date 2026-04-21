@@ -2,6 +2,13 @@
 
 Este repo puede usarse desde OpenCode siguiendo una convencion simple: delega todo el trabajo de Arduino a la CLI compartida.
 
+Para criterio tecnico y cobertura de escenarios, consulta tambien:
+
+- `docs/MICROCONTROLLER_EXPERTISE.md`
+- `docs/PROJECT_ROUTER.md`
+- `docs/components/`
+- `templates/`
+
 ## Instalacion
 
 ```bash
@@ -30,3 +37,4 @@ python tools/arduino_helper.py fix-deps ./mi-sketch --install --fqbn arduino:avr
 - Usa `fix-deps` si detectas librerias externas.
 - Usa `--fqbn` cuando quieras compilacion real.
 - Si falta `arduino-cli`, usa `ARDUINO_CLI_PATH` o instala Arduino IDE 2.x.
+- Si el usuario pide proyecto nuevo, selecciona placa y plantilla antes de generar codigo.
