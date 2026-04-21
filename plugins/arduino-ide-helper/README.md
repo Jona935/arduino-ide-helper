@@ -9,6 +9,8 @@ Plugin local de Codex para trabajar con proyectos Arduino usando `arduino-cli`.
 - Revisa proyectos `.ino`
 - Compila sketches cuando se proporciona un `FQBN`
 - Comparte una CLI portable con Claude Code y OpenCode
+- Sugiere dependencias a partir de los `#include`
+- Ayuda a mapear nombres comunes de placas a `FQBN`
 
 ## Scripts incluidos
 
@@ -34,6 +36,10 @@ powershell -ExecutionPolicy Bypass -File .\scripts\install-board-platform.ps1 -P
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\check-project.ps1 -ProjectPath "C:\ruta\mi-sketch" -Fqbn "arduino:avr:uno"
+```
+
+```powershell
+python ..\..\tools\arduino_helper.py fix-deps "C:\ruta\mi-sketch" --install --fqbn "arduino:avr:uno"
 ```
 
 ## Requisitos

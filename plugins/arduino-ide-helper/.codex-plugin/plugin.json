@@ -1,7 +1,7 @@
 {
   "name": "arduino-ide-helper",
-  "version": "0.1.0",
-  "description": "Plugin local para ayudar a instalar librerias, placas y revisar proyectos Arduino usando arduino-cli.",
+  "version": "0.3.0",
+  "description": "Plugin local para ayudar a instalar librerias, placas, detectar FQBN, revisar dependencias y trabajar proyectos Arduino usando arduino-cli.",
   "author": {
     "name": "Codex Workspace",
     "email": "local@example.com",
@@ -19,8 +19,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Arduino IDE Helper",
-    "shortDescription": "Instala librerias, placas y valida sketches Arduino.",
-    "longDescription": "Ayuda a trabajar con Arduino IDE desde Codex usando arduino-cli para instalar dependencias, plataformas de placas y revisar proyectos antes de compilar o subir.",
+    "shortDescription": "Instala librerias, placas, detecta FQBN y valida sketches Arduino.",
+    "longDescription": "Ayuda a trabajar con Arduino IDE desde Codex usando arduino-cli para instalar dependencias, plataformas de placas, detectar placas conectadas, revisar proyectos y compilar o subir sketches.",
     "developerName": "Codex Workspace",
     "category": "Developer Tools",
     "capabilities": [
@@ -34,7 +34,7 @@
     "defaultPrompt": [
       "Instala la libreria ArduinoJson.",
       "Instala la plataforma esp32:esp32.",
-      "Revisa este sketch Arduino y dime si compila."
+      "Revisa este sketch Arduino y dime que falta para compilar."
     ],
     "brandColor": "#0F766E",
     "composerIcon": "./assets/icon.svg",

@@ -39,7 +39,15 @@ npx github:Jona935/arduino-ide-helper install opencode --project .
 
 - `install-library <nombre> [--version <version>]`
 - `install-platform <platform>`
+- `list-libraries [--all]`
+- `list-platforms [--all]`
+- `list-boards [--watch]`
+- `detect-board [nombre-de-placa]`
 - `check-project <ruta> [--fqbn <fqbn>]`
+- `fix-deps <ruta> [--install] [--fqbn <fqbn>]`
+- `compile <ruta> --fqbn <fqbn>`
+- `upload <ruta> --fqbn <fqbn> --port <puerto>`
+- `monitor --port <puerto> [--config baudrate=115200]`
 
 ## Comportamiento esperado
 
@@ -48,6 +56,7 @@ npx github:Jona935/arduino-ide-helper install opencode --project .
 - Antes de instalar librerias o plataformas, actualiza indices.
 - Si no hay `FQBN`, haz una revision estructural del proyecto y dilo claramente.
 - Si el usuario nombra una placa en lenguaje natural, intenta mapearla a `FQBN`.
+- Si el proyecto tiene includes externos, corre `fix-deps` antes de compilar.
 
 ## Ejemplos de FQBN
 

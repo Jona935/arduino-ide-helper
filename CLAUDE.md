@@ -18,6 +18,12 @@ python tools/arduino_helper.py <comando> ...
 
 ## Tareas comunes
 
+Detectar placa o FQBN:
+
+```bash
+python tools/arduino_helper.py detect-board "Arduino Uno"
+```
+
 Instalar libreria:
 
 ```bash
@@ -36,8 +42,15 @@ Revisar proyecto:
 python tools/arduino_helper.py check-project /ruta/al/proyecto --fqbn arduino:avr:uno
 ```
 
+Revisar dependencias:
+
+```bash
+python tools/arduino_helper.py fix-deps /ruta/al/proyecto --install --fqbn arduino:avr:uno
+```
+
 ## Pautas
 
 - Si no conoces el `FQBN`, pide o infiere el modelo de placa antes de prometer compilacion.
 - Si falla la deteccion de `arduino-cli`, prueba con `ARDUINO_CLI_PATH`.
 - Reporta includes detectados y el resultado de compilacion.
+- Si ves includes externos, corre `fix-deps` antes de compilar.
