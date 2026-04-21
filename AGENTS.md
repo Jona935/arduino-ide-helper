@@ -71,6 +71,9 @@ npx github:Jona935/arduino-ide-helper install opencode --project .
 - `compile <ruta> --fqbn <fqbn>`
 - `upload <ruta> --fqbn <fqbn> --port <puerto>`
 - `monitor --port <puerto> [--config baudrate=115200]`
+- `recommend <idea>`
+- `list-templates`
+- `scaffold-project <nombre> <idea>`
 
 ## Comportamiento esperado
 

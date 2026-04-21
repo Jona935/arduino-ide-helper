@@ -12,6 +12,7 @@
     "docs/",
     "examples/",
     "plugins/",
+    "prompts/",
     "templates/",
     "tests/",
     "tools/",

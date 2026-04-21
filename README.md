@@ -19,6 +19,8 @@ No solo instala y compila. Tambien puede ayudar a:
 - revisar y reparar proyectos existentes
 - reutilizar plantillas profesionales por categoria
 - consultar una base de conocimiento por componente
+- recomendar placa, template y componentes automaticamente
+- crear proyectos base con scaffold
 
 ## Instalacion con npm
 
@@ -36,6 +38,12 @@ arduino-ide-helper doctor
 arduino-ide-helper install all --project .
 ```
 
+El instalador ahora tambien copia:
+
+- `ARDUINO_AGENT_SYSTEM_PROMPT.md`
+
+para que el agente tenga una guia activa mas fuerte despues de instalar.
+
 ## Despues de instalar, que puede hacer la IA
 
 Ejemplos de pedidos que ya deberia cubrir:
@@ -49,6 +57,14 @@ Ejemplos de pedidos que ya deberia cubrir:
 - "quiero controlar un motor paso a paso con A4988"
 - "quiero revisar este proyecto viejo y hacerlo compilar"
 
+Tambien puede apoyarse en la CLI para:
+
+```bash
+python tools/arduino_helper.py recommend "quiero una bascula wifi"
+python tools/arduino_helper.py list-templates
+python tools/arduino_helper.py scaffold-project smart-scale "quiero una bascula wifi"
+```
+
 ## Biblioteca de plantillas
 
 Plantillas listas para adaptar:
@@ -59,6 +75,8 @@ Plantillas listas para adaptar:
 - `templates/iot/`
 - `templates/datalogging/`
 - `templates/displays/`
+
+Ya incluye mas de una quincena de bases reutilizables.
 
 Incluye ejemplos como:
 
@@ -81,6 +99,8 @@ Documentacion inicial incluida en:
 - `docs/components/HX711.md`
 - `docs/components/A4988.md`
 - `docs/components/TB6600.md`
+
+Ya incluye mas de 20 componentes iniciales para sensores, energia, movimiento, comunicacion y drivers.
 
 ## Capa de inteligencia
 

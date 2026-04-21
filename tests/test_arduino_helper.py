@@ -33,6 +33,20 @@ class ArduinoHelperTests(unittest.TestCase):
         sketches = arduino_helper.find_sketches(project_path)
         self.assertEqual([path.name for path in sketches], ["uno-blink.ino"])
 
+    def test_recommend_for_iot_project(self) -> None:
+        recommendation = arduino_helper.build_recommendation("quiero un sensor wifi con mqtt para telemetria")
+        self.assertEqual(recommendation["profile"], "iot")
+        self.assertEqual(recommendation["recommended_board"], "esp32:esp32:esp32")
+
+    def test_list_templates_contains_expected_template(self) -> None:
+        templates = arduino_helper.discover_templates()
+        self.assertIn("templates/control/pid_heater/pid_heater.ino", templates)
+
+    def test_recommend_for_logging_project(self) -> None:
+        recommendation = arduino_helper.build_recommendation("quiero un logger wifi mqtt")
+        self.assertIn(recommendation["profile"], {"iot", "logging"})
+        self.assertTrue(recommendation["recommended_template"].startswith("templates/"))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -65,6 +65,14 @@ python tools/arduino_helper.py upload C:\ruta\proyecto --fqbn arduino:avr:uno --
 python tools/arduino_helper.py monitor --port COM3 --config baudrate=115200
 ```
 
+8. Para recomendar stack o crear un proyecto base:
+
+```bash
+python tools/arduino_helper.py recommend "quiero un medidor de bateria con wifi y mqtt"
+python tools/arduino_helper.py list-templates
+python tools/arduino_helper.py scaffold-project battery-node "quiero un medidor de bateria con wifi y mqtt"
+```
+
 ## Reglas
 
 - Si no hay `FQBN`, haz revision estructural y no prometas compilacion completa.

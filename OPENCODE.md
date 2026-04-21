@@ -29,6 +29,8 @@ python tools/arduino_helper.py install-platform esp32:esp32
 python tools/arduino_helper.py detect-board "ESP32 Dev Module"
 python tools/arduino_helper.py check-project ./mi-sketch --fqbn arduino:avr:uno
 python tools/arduino_helper.py fix-deps ./mi-sketch --install --fqbn arduino:avr:uno
+python tools/arduino_helper.py recommend "quiero telemetria mqtt"
+python tools/arduino_helper.py scaffold-project mqtt-node "quiero telemetria mqtt"
 ```
 
 ## Reglas

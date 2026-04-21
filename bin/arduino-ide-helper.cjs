@@ -198,6 +198,7 @@ function installCodexBody() {
   const pluginSource = path.join(packageRoot, "plugins", pluginName);
   const pluginDestination = path.join(home, "plugins", pluginName);
   const marketplacePath = path.join(home, ".agents", "plugins", "marketplace.json");
+  const promptDestination = path.join(home, ".arduino-ide-helper", "ARDUINO_AGENT_SYSTEM_PROMPT.md");
 
   if (!fs.existsSync(pluginSource)) {
     fail(`No encontre el plugin base en ${pluginSource}`);
@@ -238,9 +239,15 @@ function installCodexBody() {
 
   writeJson(marketplacePath, marketplace);
   console.log(`Marketplace actualizado en ${marketplacePath}`);
+  ensureDir(path.dirname(promptDestination));
+  fs.copyFileSync(
+    path.join(packageRoot, "prompts", "ARDUINO_AGENT_SYSTEM_PROMPT.md"),
+    promptDestination
+  );
   return [
     `plugin en ${pluginDestination}`,
-    `marketplace en ${marketplacePath}`
+    `marketplace en ${marketplacePath}`,
+    `prompt experto en ${promptDestination}`
   ];
 }
 
@@ -251,7 +258,15 @@ function installClaudeBody(flags) {
     path.join(projectPath, "CLAUDE.md"),
     flags.force
   );
-  return [written ? `CLAUDE.md instalado en ${projectPath}` : `CLAUDE.md conservado en ${projectPath}`];
+  const promptWritten = writeFileIfAllowed(
+    path.join(packageRoot, "prompts", "ARDUINO_AGENT_SYSTEM_PROMPT.md"),
+    path.join(projectPath, "ARDUINO_AGENT_SYSTEM_PROMPT.md"),
+    flags.force
+  );
+  return [
+    written ? `CLAUDE.md instalado en ${projectPath}` : `CLAUDE.md conservado en ${projectPath}`,
+    promptWritten ? `ARDUINO_AGENT_SYSTEM_PROMPT.md instalado en ${projectPath}` : `ARDUINO_AGENT_SYSTEM_PROMPT.md conservado en ${projectPath}`
+  ];
 }
 
 function installOpenCodeBody(flags) {
@@ -261,7 +276,15 @@ function installOpenCodeBody(flags) {
     path.join(projectPath, "OPENCODE.md"),
     flags.force
   );
-  return [written ? `OPENCODE.md instalado en ${projectPath}` : `OPENCODE.md conservado en ${projectPath}`];
+  const promptWritten = writeFileIfAllowed(
+    path.join(packageRoot, "prompts", "ARDUINO_AGENT_SYSTEM_PROMPT.md"),
+    path.join(projectPath, "ARDUINO_AGENT_SYSTEM_PROMPT.md"),
+    flags.force
+  );
+  return [
+    written ? `OPENCODE.md instalado en ${projectPath}` : `OPENCODE.md conservado en ${projectPath}`,
+    promptWritten ? `ARDUINO_AGENT_SYSTEM_PROMPT.md instalado en ${projectPath}` : `ARDUINO_AGENT_SYSTEM_PROMPT.md conservado en ${projectPath}`
+  ];
 }
 
 function probe(command, args = ["--version"]) {

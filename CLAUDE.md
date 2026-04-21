@@ -57,6 +57,13 @@ Revisar dependencias:
 python tools/arduino_helper.py fix-deps /ruta/al/proyecto --install --fqbn arduino:avr:uno
 ```
 
+Recomendar stack o crear base:
+
+```bash
+python tools/arduino_helper.py recommend "quiero una estacion ambiental con wifi"
+python tools/arduino_helper.py scaffold-project weather-node "quiero una estacion ambiental con wifi"
+```
+
 ## Pautas
 
 - Si no conoces el `FQBN`, pide o infiere el modelo de placa antes de prometer compilacion.
