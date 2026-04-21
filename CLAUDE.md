@@ -2,6 +2,12 @@
 
 Usa este repo como helper de Arduino desde Claude Code.
 
+## Instalacion
+
+```bash
+npx github:Jona935/arduino-ide-helper install claude --project .
+```
+
 ## Regla principal
 
 Para instalar librerias, instalar placas o revisar sketches, ejecuta la herramienta compartida:

@@ -2,6 +2,12 @@
 
 Este repo puede usarse desde OpenCode siguiendo una convencion simple: delega todo el trabajo de Arduino a la CLI compartida.
 
+## Instalacion
+
+```bash
+npx github:Jona935/arduino-ide-helper install opencode --project .
+```
+
 ## Entrada recomendada
 
 ```bash

@@ -19,6 +19,22 @@ Prefiere siempre la CLI compartida:
 python tools/arduino_helper.py <comando> ...
 ```
 
+## Instalacion recomendada
+
+Si este repo aun no esta integrado al entorno del agente:
+
+```bash
+npx github:Jona935/arduino-ide-helper install codex
+```
+
+```bash
+npx github:Jona935/arduino-ide-helper install claude --project .
+```
+
+```bash
+npx github:Jona935/arduino-ide-helper install opencode --project .
+```
+
 ## Comandos
 
 - `install-library <nombre> [--version <version>]`

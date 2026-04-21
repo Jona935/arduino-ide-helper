@@ -1,0 +1,35 @@
+{
+  "name": "arduino-ide-helper",
+  "version": "0.2.0",
+  "description": "Instalador npm y toolkit portable para Codex, Claude Code y OpenCode con arduino-cli.",
+  "license": "MIT",
+  "type": "commonjs",
+  "bin": {
+    "arduino-ide-helper": "./bin/arduino-ide-helper.cjs"
+  },
+  "files": [
+    "bin/",
+    "plugins/",
+    "tools/",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "OPENCODE.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "doctor": "node ./bin/arduino-ide-helper.cjs doctor",
+    "help": "node ./bin/arduino-ide-helper.cjs --help"
+  },
+  "keywords": [
+    "arduino",
+    "arduino-cli",
+    "codex",
+    "claude-code",
+    "opencode",
+    "embedded"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
