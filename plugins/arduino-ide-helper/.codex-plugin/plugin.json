@@ -1,0 +1,44 @@
+{
+  "name": "arduino-ide-helper",
+  "version": "0.1.0",
+  "description": "Plugin local para ayudar a instalar librerias, placas y revisar proyectos Arduino usando arduino-cli.",
+  "author": {
+    "name": "Codex Workspace",
+    "email": "local@example.com",
+    "url": "https://arduino.cc/"
+  },
+  "homepage": "https://arduino.github.io/arduino-cli/",
+  "repository": "https://arduino.github.io/arduino-cli/",
+  "license": "MIT",
+  "keywords": [
+    "arduino",
+    "arduino-cli",
+    "embedded",
+    "ide"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Arduino IDE Helper",
+    "shortDescription": "Instala librerias, placas y valida sketches Arduino.",
+    "longDescription": "Ayuda a trabajar con Arduino IDE desde Codex usando arduino-cli para instalar dependencias, plataformas de placas y revisar proyectos antes de compilar o subir.",
+    "developerName": "Codex Workspace",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write",
+      "Shell"
+    ],
+    "websiteURL": "https://arduino.github.io/arduino-cli/",
+    "privacyPolicyURL": "https://www.arduino.cc/en/privacy-policy",
+    "termsOfServiceURL": "https://www.arduino.cc/en/terms-conditions",
+    "defaultPrompt": [
+      "Instala la libreria ArduinoJson.",
+      "Instala la plataforma esp32:esp32.",
+      "Revisa este sketch Arduino y dime si compila."
+    ],
+    "brandColor": "#0F766E",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/logo.svg",
+    "screenshots": []
+  }
+}
