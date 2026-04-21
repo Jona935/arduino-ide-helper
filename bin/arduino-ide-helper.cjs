@@ -7,8 +7,58 @@ const { spawnSync } = require("node:child_process");
 
 const packageRoot = path.resolve(__dirname, "..");
 const pluginName = "arduino-ide-helper";
+const banner = String.raw`
+      _         _       _
+     / \   _ __| | ___ (_)_ __   ___
+    / _ \ | '__| |/ _ \| | '_ \ / _ \
+   / ___ \| |  | | (_) | | | | | (_) |
+  /_/   \_\_|  |_|\___/|_|_| |_|\___/
+
+   .-------------------------------------.
+   |   o   Arduino IDE Helper v0.3.0     |
+   |  ---  firmware + sensores + plot    |
+   |   +   codex / claude / opencode     |
+   '-------------------------------------'
+`;
+
+function sleepMs(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function showIntro(mode = "default") {
+  if (!process.stdout.isTTY) {
+    if (mode !== "quiet") {
+      console.log("Arduino IDE Helper");
+    }
+    return;
+  }
+
+  console.log(banner);
+
+  const frames = [
+    "[=         ] booting boards",
+    "[===       ] syncing sensors",
+    "[=====     ] tuning signals",
+    "[=======   ] preparing tools",
+    "[========= ] ready for upload"
+  ];
+
+  const useAnimation = mode === "animated";
+  if (!useAnimation) {
+    console.log(frames[frames.length - 1]);
+    console.log("");
+    return;
+  }
+
+  for (const frame of frames) {
+    process.stdout.write(`\r${frame}`);
+    sleepMs(55);
+  }
+  process.stdout.write("\n\n");
+}
 
 function printHelp() {
+  showIntro("default");
   console.log(`arduino-ide-helper
 
 Uso:
@@ -94,7 +144,22 @@ function writeJson(filePath, payload) {
   fs.writeFileSync(filePath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
 }
 
-function installCodex() {
+function requireProject(flags) {
+  const projectPath = flags.project ? path.resolve(flags.project) : process.cwd();
+  if (!fs.existsSync(projectPath) || !fs.statSync(projectPath).isDirectory()) {
+    fail(`La carpeta del proyecto no existe: ${projectPath}`);
+  }
+  return projectPath;
+}
+
+function installAll(flags) {
+  showIntro("animated");
+  installCodexBody();
+  installClaudeBody(flags);
+  installOpenCodeBody(flags);
+}
+
+function installCodexBody() {
   const home = os.homedir();
   const pluginSource = path.join(packageRoot, "plugins", pluginName);
   const pluginDestination = path.join(home, "plugins", pluginName);
@@ -141,15 +206,7 @@ function installCodex() {
   console.log(`Marketplace actualizado en ${marketplacePath}`);
 }
 
-function requireProject(flags) {
-  const projectPath = flags.project ? path.resolve(flags.project) : process.cwd();
-  if (!fs.existsSync(projectPath) || !fs.statSync(projectPath).isDirectory()) {
-    fail(`La carpeta del proyecto no existe: ${projectPath}`);
-  }
-  return projectPath;
-}
-
-function installClaude(flags) {
+function installClaudeBody(flags) {
   const projectPath = requireProject(flags);
   writeFileIfAllowed(
     path.join(packageRoot, "CLAUDE.md"),
@@ -158,19 +215,13 @@ function installClaude(flags) {
   );
 }
 
-function installOpenCode(flags) {
+function installOpenCodeBody(flags) {
   const projectPath = requireProject(flags);
   writeFileIfAllowed(
     path.join(packageRoot, "OPENCODE.md"),
     path.join(projectPath, "OPENCODE.md"),
     flags.force
   );
-}
-
-function installAll(flags) {
-  installCodex();
-  installClaude(flags);
-  installOpenCode(flags);
 }
 
 function probe(command, args = ["--version"]) {
@@ -182,6 +233,7 @@ function probe(command, args = ["--version"]) {
 }
 
 function doctor() {
+  showIntro("default");
   const nodeVersion = process.version;
   console.log(`Node: ${nodeVersion}`);
 
@@ -247,15 +299,18 @@ function main() {
   }
 
   if (target === "codex") {
-    installCodex();
+    showIntro("animated");
+    installCodexBody();
     return;
   }
   if (target === "claude") {
-    installClaude(flags);
+    showIntro("animated");
+    installClaudeBody(flags);
     return;
   }
   if (target === "opencode") {
-    installOpenCode(flags);
+    showIntro("animated");
+    installOpenCodeBody(flags);
     return;
   }
   if (target === "all") {
